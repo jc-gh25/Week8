@@ -1,0 +1,117 @@
+Week 8 Research
+
+1. Describe each of the ten (10) MySQL data types.  
+    (a) How is each data type used?
+    (b) What makes each unique?
+
+Numeric Data Types
+
+INT: Used for whole numbers without decimals. Unique because it can be signed or unsigned, with varying storage sizes (TINYINT, SMALLINT, MEDIUMINT, BIGINT).
+Use: Storing quantities, IDs, counts.
+Uniqueness: Different ranges based on size; UNSIGNED allows only non-negative values.
+
+FLOAT/DOUBLE: Used for floating-point numbers with decimals. FLOAT has lower precision than DOUBLE.
+Use: Scientific measurements (DECIMAL is preferred for exactness).
+Uniqueness: FLOAT uses less storage but may have rounding errors; DOUBLE offers higher precision.
+
+DECIMAL: Used for precise decimal numbers. Unique in that it stores exact values without loss of precision.
+Use: Financial data, currency where accuracy is critical.
+Uniqueness: Avoids floating-point inaccuracies by storing as strings with specified precision and scale.
+
+Date/Time Data Types
+
+DATE: Stores dates in YYYY-MM-DD format. Unique because it only stores the date part.
+Use: Birthdays, event dates.
+Uniqueness: Doesn’t include time information.
+
+DATETIME: Stores both date and time (YYYY-MM-DD HH:MM:SS). Unique in its combined storage of date and time.
+Use: Timestamps for events, logs.
+Uniqueness: Includes both date and time components.
+
+TIMESTAMP: Similar to DATETIME but with automatic updates on modification. Unique because it’s automatically updated when a row is modified.
+Use: Tracking record changes.
+Uniqueness: Automatically managed by the database system.
+
+String Data Types
+
+CHAR(size): Fixed-length string (0 to 255), padded with spaces if shorter than size. Unique in its fixed length.
+Use: Storing codes or abbreviations where length is consistent.
+Uniqueness: Always occupies ‘size’ bytes, even if data is shorter.
+
+VARCHAR(size): Variable-length string (0 to 65,535), storing only the characters needed plus a length indicator. Unique in its variable length.
+Use: Names, addresses, descriptions of varying lengths.
+Uniqueness: Uses storage efficiently by adjusting to actual data length.
+
+TEXT(size): Holds a string with a maximum length of 65,535 bytes.
+MEDIUMTEXT and LONGTEXT also available.
+Uniqueness: TEXT columns cannot be assigned DEFAULT values.
+
+BLOB(size): Large text or binary data (Binary Large Objects). Unique in their ability to store large amounts of unstructured data.
+Use: Articles, images, documents.
+Uniqueness: Can handle large binary files. MEDIUMBLOB and LONGBLOB also available.
+
+ENUM: A string object that can have only one value as defined by one or more options specified.
+Uniqueness: The only way to restrict a string value with a predefined list other than the SET string object.
+
+https://dev.mysql.com/doc/refman/8.4/en/data-types.html
+https://www.w3schools.com/sql/sql_datatypes.asp
+
+
+2. Research primary & foreign keys in RDBMSs?  What are they?  Why are they useful?
+
+The Primary Key is like the required unique ID for every item in a table. No two rows can have the same ID. Enables data integrity and record retrieval. Naming the PK column as tablename_id keeps things organized. It is recommended to use a synthetic key instead of a value from some other table (a natural key).
+
+A foreign key points to another table’s primary key, creating a link between the two. Foreign key columns are named the same as the PK column in the related table. E.g., in the table named instructions, the FK would be named product_id. With the ‘instructions’ table referencing a ‘product_id’, you can correctly link the product those instructions belong to.
+
+https://dev.mysql.com/doc/refman/8.4/en/glossary.html
+
+
+3. Define DDL and DML. What do the acronyms mean? Describe each one. Give examples.
+
+DDL (Data Definition Language): The keywords that define the structure or schema of the database. Does not use a WHERE clause.
+Examples of DDL: CREATE, ALTER, and DROP
+
+DML (Data Manipulation Language): The keywords that manage and manipulate data in the database. Uses a WHERE clause. 
+Examples of DML: SELECT, INSERT, UPDATE, and DELETE
+
+DDL is about the structure, DML is about the content. You could think of it like building and decorating a house. DDL is like laying the foundation and walls, and DML is like furnishing and living in it.
+
+https://www.geeksforgeeks.org/dbms/difference-between-ddl-and-dml-in-dbms/
+
+
+4. What are INDEXes in MySQL?  Why are they important?  What benefit do they provide?
+
+The index on one or more columns helps the database quickly locate specific rows without scanning the entire table. You can think of it like a phone book - instead of flipping through every page to find a number, you look it up alphabetically by name. When you run a query that uses an indexed column, SQL can jump straight to those relevant records instead of checking every single one. That’s especially helpful for large tables. 
+
+However, writing operations become slower because 4eEvery time you add or update data in the table, the index must also be updated.
+
+https://www.w3schools.com/sql/sql_create_index.asp
+
+
+5. What is a VIEW in an RDBMS.  What is a view?  Why is it useful?
+
+Views are like saved queries that act as virtual tables. They don’t hold data themselves but pull it dynamically from the underlying tables when the view is accessed.
+The definition of a view is frozen at the time of creation and is not updated with changes to tables such as dropped columns or added columns.
+
+https://www.geeksforgeeks.org/sql/sql-views/
+https://dev.mysql.com/doc/refman/8.4/en/create-view.html
+
+
+6. What is a JOIN when talking about databases?
+
+A JOIN clause combines rows into one view from two or more tables (up to 61) based on a related column. This is how you link data stored in separate tables but logically connected.
+
+A join helps you answer questions that require data from multiple sources. For example: “Show me all customers and their orders” (using INNER JOIN to only show customers who have placed orders).
+Different types of JOINs give you different views based on whether you want to include unmatched rows or not.
+
+If not specified, a JOIN acts as an INNER JOIN which only returns rows where there’s a match in both tables. 
+Other types of joins:
+LEFT JOIN (or LEFT OUTER): Shows all rows from the left table and matching ones from the right. If a row in the left doesn’t have a match on the right, it still appears with empty values for the right’s columns. Think of it as “Show me everything from the first list, plus any matches from the second.”
+RIGHT JOIN (or RIGHT OUTER): Similar to LEFT JOIN but shows all rows from the right table instead.
+FULL JOIN (or FULL OUTER): Combines both left and right joins—shows all rows from both tables, filling in missing values with empty ones where there’s no match.
+CROSS JOIN: Creates every possible combination of rows between two tables. It’s like pairing every item from one list with every item from another, which can result in a huge number of combinations if the tables are large.
+
+Use an ON clause to specify how to join the tables, and the WHERE clause to limit the rows included in the results.
+ 
+https://www.w3schools.com/sql/sql_join.asp
+https://dev.mysql.com/doc/refman/8.4/en/join.html
